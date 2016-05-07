@@ -1,6 +1,7 @@
 ﻿using System;
 using Xamarin.Forms;
 using System.Collections.Generic;
+using System.Collections.ObjectModel;
 
 namespace RoccaCarousel
 {
@@ -13,13 +14,17 @@ namespace RoccaCarousel
 			#region Carousel Code
 
 			// Initialise a new Carousel layout
-			var carousel = GenerateCarousel();
+			var carousel = new FlexCarouselView
+            {
+                HorizontalOptions = LayoutOptions.FillAndExpand,
+                VerticalOptions = LayoutOptions.FillAndExpand
+            };
+            carousel.Children.Add(CreatePage(Color.Maroon, Color.White, new Label { Text = "Page 1\n" + ExampleStrings.ILikeDogs, TextColor = Color.White }, null));
+            carousel.Children.Add(CreatePage(Color.Navy, Color.White, new Label { Text = "Page 2\n" + ExampleStrings.WaterMovesFast, TextColor = Color.White }, null));
+            carousel.Children.Add(CreatePage(Color.White, Color.Black, new Label { Text = "Page 3\n" + ExampleStrings.LysineContingency, TextColor = Color.Black }, null));
 
 			// Create a Page using our usual format with buttons on the outside, controlling the nested carousel
 			Grid basePage = CreatePage(Color.Default, Color.Default, carousel, carousel);
-
-			// Finally initialise it, this sets the starting page and calculates the size, etc.
-			carousel.Initialise (0);
 
 			#endregion
 
@@ -29,30 +34,9 @@ namespace RoccaCarousel
 			Content = basePage;
 		}
 
-		public ManualCarouselView GenerateCarousel() {
-			ManualCarouselView carousel = new ManualCarouselView {
-				Pages = new List<Layout> (),
-				HorizontalOptions = LayoutOptions.FillAndExpand,
-				VerticalOptions = LayoutOptions.FillAndExpand
-			};
-
-			AddPagesToCarousel(carousel);
-
-			carousel.Initialise (0);
-
-			return carousel;
-		}
-
-		public void AddPagesToCarousel(ManualCarouselView carousel) {
-			// Add content pages to the carousel (in this instance, the buttons are nested within the carousel)
-			carousel.Pages.Add (CreatePage (Color.Maroon, Color.White, new Label() { Text = "Page 1\n" + ExampleStrings.ILikeDogs, TextColor = Color.White }, null));
-			carousel.Pages.Add (CreatePage (Color.Navy, Color.White, new Label() { Text = "Page 2\n" + ExampleStrings.WaterMovesFast, TextColor = Color.White }, null));
-			carousel.Pages.Add (CreatePage (Color.White, Color.Black, new Label() { Text = "Page 3\n" + ExampleStrings.LysineContingency, TextColor = Color.Black }, null));
-		}
-
 		// Here we create basic pages for the views, only we specify the content to display in the main area
 		// We also specify which CarouselView we wish to manipulate by passing it in.
-		public Grid CreatePage(Color bgColor, Color textColor, View content, ManualCarouselView eventTarget) {
+		public Grid CreatePage(Color bgColor, Color textColor, View content, FlexCarouselView eventTarget) {
 
 			Grid layout = new Grid {
 				ColumnDefinitions = new ColumnDefinitionCollection {
@@ -75,7 +59,7 @@ namespace RoccaCarousel
 				Command = new Command(() => {
 					Device.BeginInvokeOnMainThread(() => {
 						if (eventTarget != null) {
-							eventTarget.AdvancePage(-1);
+                            eventTarget.PreviousItem();
 						}
 					});
 				})
@@ -87,7 +71,7 @@ namespace RoccaCarousel
 				Command = new Command(() => {
 					Device.BeginInvokeOnMainThread(() => {
 						if (eventTarget != null) {
-							eventTarget.AdvancePage(1);
+                            eventTarget.NextItem();
 						}
 					});
 				})

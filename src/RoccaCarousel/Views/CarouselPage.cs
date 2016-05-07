@@ -3,44 +3,28 @@ using Xamarin.Forms;
 
 namespace RoccaCarousel
 {
-	public class CarouselPage : ContentView, IManualCarouselPage
+	public class CarouselPage : ContentView, IFlexCarouselItemView
 	{
-		public event Action PageAppearing;
-		public event Action PageDisappearing;
-		public event Action PageAppeared;
-		public event Action PageDisappeared;
+		public event Action ItemViewAppearing;
+        public event Action ItemViewDisappearing;
+        public event Action ItemViewAppeared;
+        public event Action ItemViewDisappeared;
 
-		public CarouselPage () : base() {
-
-		}
-
-		#region IManualCarouselPage implementation
-		public void OnPageAppearing ()
+        public void OnItemViewAppearing()
 		{
-			if (PageAppearing != null) {
-				PageAppearing ();
-			}
+            ItemViewAppearing?.Invoke();
 		}
-		public void OnPageDisappearing ()
+        public void OnItemViewDisappearing()
 		{
-			if (PageDisappearing != null) {
-				PageDisappearing ();
-			}
+            ItemViewDisappearing?.Invoke();
 		}
-		public void OnPageAppeared ()
+        public void OnItemViewAppeared()
 		{
-			if (PageAppeared != null) {
-				PageAppeared ();
-			}
+            ItemViewAppeared?.Invoke();
 		}
-		public void OnPageDisappeared ()
+        public void OnItemViewDisappeared()
 		{
-			if (PageDisappeared != null) {
-				PageDisappeared ();
-			}
+            ItemViewDisappeared.Invoke();
 		}
-		#endregion
-
 	}
 }
-

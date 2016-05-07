@@ -2,6 +2,7 @@
 
 using Xamarin.Forms;
 using System.Collections.Generic;
+using System.Collections.ObjectModel;
 
 namespace RoccaCarousel
 {
@@ -12,10 +13,10 @@ namespace RoccaCarousel
 		private DateTime _timerStart;
 
 		// Content variable definitions
-		ManualCarouselView box1;
+		FlexCarouselView box1;
 		ContentView 	   box2;
-		ManualCarouselView box3;
-		ManualCarouselView box4;
+		FlexCarouselView box3;
+		FlexCarouselView box4;
 		ContentView		   box5;
 
 		TimerWrapper timer;
@@ -33,13 +34,13 @@ namespace RoccaCarousel
 			var secondsSinceStart = GetSecondsSinceTimerStart;
 
 			if (secondsSinceStart % 5 == 0) {
-				box1.AdvancePage(1);
+                box1.NextItem();
 			}  
 			if (secondsSinceStart % 4 == 0) {
-				box3.AdvancePage(1);
+                box3.NextItem();
 			} 
 			if (secondsSinceStart % 2 == 0) {
-				box4.AdvancePage(1);
+                box4.NextItem();
 			} 
 		}
 
@@ -89,10 +90,10 @@ namespace RoccaCarousel
 				}
 			};
 
-			box1 = new ManualCarouselView{ Pages = new List<Layout>() }; // LiveTile
+            box1 = new FlexCarouselView(); // LiveTile
 			box2 = new ContentView{ BackgroundColor = Color.Green }; // Boring Tile
-			box3 = new ManualCarouselView{ Pages = new List<Layout>() }; // Double-Width Live-Tile
-			box4 = new ManualCarouselView{ Pages = new List<Layout>() }; // Double-Height Live-Tile
+            box3 = new FlexCarouselView(); // Double-Width Live-Tile
+            box4 = new FlexCarouselView(); // Double-Height Live-Tile
 			box5 = new ContentView{ BackgroundColor = Color.Blue }; // Double-Height boring tile
 
 			SetupBox1(box1);
@@ -114,7 +115,7 @@ namespace RoccaCarousel
 			};
 		}
 
-		private void SetupBox1(ManualCarouselView box) {
+		private void SetupBox1(FlexCarouselView box) {
 			Label lb1 = new Label {
 				TextColor = Color.White,
 				Text = ExampleStrings.LiveTile1[0]
@@ -134,9 +135,8 @@ namespace RoccaCarousel
 				Content = lb2
 			};
 
-			box.Pages.Add (pg1);
-			box.Pages.Add (pg2);
-			box.Initialise (0);
+			box.Children.Add (pg1);
+			box.Children.Add (pg2);
 		}
 
 		private void SetupBox2(ContentView box) {
@@ -144,7 +144,7 @@ namespace RoccaCarousel
 			box.Content = new Label { Text = ExampleStrings.LiveTile2, TextColor = Color.White };
 		}
 
-		private void SetupBox3(ManualCarouselView box) {
+		private void SetupBox3(FlexCarouselView box) {
 			Label lb1 = new Label {
 				TextColor = Color.Black,
 				Text = ExampleStrings.LiveTile3[0]
@@ -164,12 +164,11 @@ namespace RoccaCarousel
 				Content = lb2
 			};
 
-			box.Pages.Add (pg1);
-			box.Pages.Add (pg2);
-			box.Initialise (0);
+			box.Children.Add (pg1);
+			box.Children.Add (pg2);
 		}
 
-		private void SetupBox4(ManualCarouselView box) {
+		private void SetupBox4(FlexCarouselView box) {
 			int timesTileHasChanged = 0;
 
 			Label lb1 = new Label {
@@ -196,21 +195,20 @@ namespace RoccaCarousel
 
 			// If you extend the standard layout classes to implement the IManualCarouselPage interface
 			// Then you can tie events to when the pages change.
-			pg1.PageAppearing += () => {
+			pg1.ItemViewAppearing += () => {
 				Device.BeginInvokeOnMainThread(() => {
 					lb1.Text = String.Format("{0} {1}", ExampleStrings.LiveTile4[0], ++timesTileHasChanged);
 				});
 			};
-			pg2.PageAppearing += () => {
+			pg2.ItemViewAppearing += () => {
 				Device.BeginInvokeOnMainThread(() => {
 					lb2.Text = String.Format("{0} {1}\n\n{2}", ExampleStrings.LiveTile4[0], ++timesTileHasChanged, ExampleStrings.LiveTile4[1]);
 				});
 			};
 
 			
-			box.Pages.Add (pg1);
-			box.Pages.Add (pg2);
-			box.Initialise (0);
+			box.Children.Add (pg1);
+			box.Children.Add (pg2);
 		}
 
 		private void SetupBox5(ContentView box) {

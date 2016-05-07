@@ -1,30 +1,27 @@
 ﻿using System;
 using Xamarin.Forms;
 using System.Collections.Generic;
+using System.Collections.ObjectModel;
 
 namespace RoccaCarousel
 {
 	public class Example_NestedCarousels : ContentPage
 	{
-		ManualCarouselView _carousel;
+		FlexCarouselView _carousel;
 
 		public Example_NestedCarousels ()
 		{
 			#region Carousel Code
 
 			// Initialise a new Carousel layout
-			_carousel = new ManualCarouselView {
-				Pages = new List<Layout> (),
+			_carousel = new FlexCarouselView {
 				HorizontalOptions = LayoutOptions.FillAndExpand,
 				VerticalOptions = LayoutOptions.FillAndExpand
 			};
 
 			var nestedCarousel = GenerateCarousel(); // Generate our Nested Carousel
 			AddPageToParentCarousel(_carousel, nestedCarousel); // Add the generated 
-			_carousel.Pages.Add (CreatePage (Color.Maroon, Color.White, new Label() { Text = "Parent Carousel\nPage 2:\n" + ExampleStrings.ILikeDogs, TextColor = Color.White }, _carousel));
-
-			// Finally initialise it, this sets the starting page and calculates the size, etc.
-			_carousel.Initialise (0);
+			_carousel.Children.Add (CreatePage (Color.Maroon, Color.White, new Label() { Text = "Parent Carousel\nPage 2:\n" + ExampleStrings.ILikeDogs, TextColor = Color.White }, _carousel));
 
 			#endregion
 
@@ -34,35 +31,32 @@ namespace RoccaCarousel
 			Content = _carousel;
 		}
 
-		public ManualCarouselView GenerateCarousel() {
-			ManualCarouselView carousel = new ManualCarouselView {
-				Pages = new List<Layout> (),
+		public FlexCarouselView GenerateCarousel() {
+			FlexCarouselView carousel = new FlexCarouselView {
 				HorizontalOptions = LayoutOptions.FillAndExpand,
 				VerticalOptions = LayoutOptions.FillAndExpand
 			};
 
 			AddPagesToNestedCarousel(carousel);
 
-			carousel.Initialise (0);
-
 			return carousel;
 		}
 
-		public void AddPagesToNestedCarousel(ManualCarouselView carousel) {
+		public void AddPagesToNestedCarousel(FlexCarouselView carousel) {
 			// Add content pages to the carousel (in this instance, the buttons are nested within the carousel)
-			carousel.Pages.Add (CreatePage (Color.Maroon, Color.White, new Label() { Text = "Nested Page 1\n" + ExampleStrings.ILikeDogs, TextColor = Color.White }, carousel));
-			carousel.Pages.Add (CreatePage (Color.Navy, Color.White, new Label() { Text = "Nested Page 2\n" + ExampleStrings.WaterMovesFast, TextColor = Color.White }, carousel));
-			carousel.Pages.Add (CreatePage (Color.White, Color.Black, new Label() { Text = "Nested Page 3\n" + ExampleStrings.LysineContingency, TextColor = Color.Black }, carousel));
+			carousel.Children.Add (CreatePage (Color.Maroon, Color.White, new Label() { Text = "Nested Page 1\n" + ExampleStrings.ILikeDogs, TextColor = Color.White }, carousel));
+			carousel.Children.Add (CreatePage (Color.Navy, Color.White, new Label() { Text = "Nested Page 2\n" + ExampleStrings.WaterMovesFast, TextColor = Color.White }, carousel));
+			carousel.Children.Add (CreatePage (Color.White, Color.Black, new Label() { Text = "Nested Page 3\n" + ExampleStrings.LysineContingency, TextColor = Color.Black }, carousel));
 		}
 
-		public void AddPageToParentCarousel(ManualCarouselView carousel, ManualCarouselView nestedCarousel) {
+		public void AddPageToParentCarousel(FlexCarouselView carousel, FlexCarouselView nestedCarousel) {
 			// Add content pages to the carousel (in this instance, the buttons are nested within the carousel)
-			carousel.Pages.Add (CreatePage (Color.Maroon, Color.White, nestedCarousel, carousel));
+			carousel.Children.Add (CreatePage (Color.Maroon, Color.White, nestedCarousel, carousel));
 		}
 			
 		// Here we create basic pages for the views, only we specify the content to display in the main area
 		// We also specify which CarouselView we wish to manipulate by passing it in.
-		public Grid CreatePage(Color bgColor, Color textColor, View content, ManualCarouselView eventTarget) {
+		public Grid CreatePage(Color bgColor, Color textColor, View content, FlexCarouselView eventTarget) {
 
 			Grid layout = new Grid {
 				ColumnDefinitions = new ColumnDefinitionCollection {
@@ -85,7 +79,7 @@ namespace RoccaCarousel
 				TextColor = textColor,
 				Command = new Command(() => {
 					Device.BeginInvokeOnMainThread(() => {
-						eventTarget.AdvancePage(-1);
+                        eventTarget.PreviousItem();
 					});
 				})
 			};
@@ -95,7 +89,7 @@ namespace RoccaCarousel
 				TextColor = textColor,
 				Command = new Command(() => {
 					Device.BeginInvokeOnMainThread(() => {
-						eventTarget.AdvancePage(1);
+                        eventTarget.NextItem();
 					});
 				})
 			};

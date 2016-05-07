@@ -1,0 +1,63 @@
+﻿<?xml version="1.0" encoding="UTF-8"?>
+<ContentPage 
+		xmlns="http://xamarin.com/schemas/2014/forms" 
+		xmlns:x="http://schemas.microsoft.com/winfx/2009/xaml" 
+		xmlns:local="clr-namespace:RoccaCarousel;assembly=RoccaCarousel"
+		x:Class="RoccaCarousel.Example_FullXamlPage">
+    <local:FlexCarouselView x:Name="Carousel">
+		<Grid BackgroundColor="Maroon">
+			<Grid.ColumnDefinitions>
+                <ColumnDefinition Width="*"/>
+                <ColumnDefinition Width="*"/>
+				<ColumnDefinition Width="*"/>
+			</Grid.ColumnDefinitions>
+			<Grid.RowDefinitions>
+                <RowDefinition Height="*"/>
+                <RowDefinition Height="*"/>
+                <RowDefinition Height="*"/>
+				<RowDefinition Height="*"/>
+			</Grid.RowDefinitions>
+			<Label Grid.Column="0" Grid.Row="0" Grid.ColumnSpan="3" Grid.RowSpan="3" 
+					TextColor="White" HorizontalTextAlignment="Center" VerticalTextAlignment="Center"
+					Text="{Binding ILikeDogs}" />
+			<Button Grid.Column="0" Grid.Row="3" Text="Back" TextColor="White" Command="{Binding BackCommand}"/>
+            <Button Grid.Column="2" Grid.Row="3" Text="Next" TextColor="White" Command="{Binding NextCommand}"/>
+		</Grid>
+        <Grid BackgroundColor="Navy">
+            <Grid.ColumnDefinitions>
+                <ColumnDefinition Width="*"/>
+                <ColumnDefinition Width="*"/>
+                <ColumnDefinition Width="*"/>
+            </Grid.ColumnDefinitions>
+            <Grid.RowDefinitions>
+                <RowDefinition Height="*"/>
+                <RowDefinition Height="*"/>
+                <RowDefinition Height="*"/>
+                <RowDefinition Height="*"/>
+            </Grid.RowDefinitions>
+            <Label Grid.Column="0" Grid.Row="0" Grid.ColumnSpan="3" Grid.RowSpan="3" 
+                    TextColor="White" HorizontalTextAlignment="Center" VerticalTextAlignment="Center"
+                    Text="{Binding WaterMovesFast}" />
+            <Button Grid.Column="0" Grid.Row="3" Text="Back" TextColor="White" Command="{Binding BackCommand}"/>
+            <Button Grid.Column="2" Grid.Row="3" Text="Next" TextColor="White" Command="{Binding NextCommand}"/>
+        </Grid>
+        <Grid BackgroundColor="White">
+            <Grid.ColumnDefinitions>
+                <ColumnDefinition Width="*"/>
+                <ColumnDefinition Width="*"/>
+                <ColumnDefinition Width="*"/>
+            </Grid.ColumnDefinitions>
+            <Grid.RowDefinitions>
+                <RowDefinition Height="*"/>
+                <RowDefinition Height="*"/>
+                <RowDefinition Height="*"/>
+                <RowDefinition Height="*"/>
+            </Grid.RowDefinitions>
+            <Label Grid.Column="0" Grid.Row="0" Grid.ColumnSpan="3" Grid.RowSpan="3" 
+                    TextColor="Black" HorizontalTextAlignment="Center" VerticalTextAlignment="Center"
+                    Text="{Binding LysineContingency}" />
+            <Button Grid.Column="0" Grid.Row="3" Text="Back" TextColor="Black" Command="{Binding BackCommand}"/>
+            <Button Grid.Column="2" Grid.Row="3" Text="Next" TextColor="Black" Command="{Binding NextCommand}"/>
+        </Grid>
+	</local:FlexCarouselView>
+</ContentPage>
